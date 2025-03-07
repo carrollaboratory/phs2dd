@@ -118,18 +118,17 @@ def convert_xml_urls_to_csv(xml_urls):
     except requests.exceptions.RequestException as e:
         # Handle possible errors, like network issues
         print(f"An error occurred: {e}")
-        
-        
-        
-if __name__ == "__main__":
+
+def main():
     study_url = f"https://ftp.ncbi.nlm.nih.gov/dbgap/studies/{phs}/"
     pheno_var_sums_url = f"{study_url}{get_lastest_version(study_url)}/pheno_variable_summaries/"
     data_dict_urls = []
     for data_dict_url in get_data_dict_str(pheno_var_sums_url):
         data_dict_urls.append(f"{pheno_var_sums_url}{data_dict_url}")
     convert_xml_urls_to_csv(data_dict_urls)
-    
-    
+        
+if __name__ == "__main__":
+    main()    
     #todo: what to do if latest version data_dict is not available?
     #maybe get the previous latest version?
 

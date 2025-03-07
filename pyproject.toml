@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phs2dd"
+authors = [
+    {name = "Morgan Higby-Flowers", email="morgan.e.higby-flowers@vumc.org"}
+]
+description = "A script to scrape data dictionaries from dbGaP."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["dbGaP", "data dictionary", "scraping"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "requests>=2.25.1",
+    "beautifulsoup4>=4.9.3",
+    "lxml>=4.6.2"
+]
+
+dynamic = ["version"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+phs2dd = "phs2dd:main"
