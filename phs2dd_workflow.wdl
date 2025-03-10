@@ -2,17 +2,19 @@ version 1.0
 
 task run_phs2dd_script {
   input {
+    # The Python script file (phs2dd.py) to run.
+    File script
+
     # The dbGaP PHS ID to scrape.
     String phs_id
   }
 
-
   command <<<
+    # Install required Python libraries inside the Docker container.
     pip install requests beautifulsoup4 lxml
-    # Hardcode the download of the script via curl or wget, then run it:
-    curl -L -o phs2dd.py https://raw.githubusercontent.com/mhigbyflowers/phs2dd/main/src/phs2dd.py
-    python3 phs2dd.py -phs ~{phs_id}
-  
+
+    # Run the script, passing the PHS ID as an argument.
+    python3 ~{script} -phs ~{phs_id}
   >>>
 
   runtime {
