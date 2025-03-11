@@ -19,7 +19,7 @@ task run_phs2dd_script {
 
   runtime {
     # Use an official Python 3.9 Docker image so we have Python available.
-    docker: "python:3.9"
+    docker: "us.gcr.io/broad-dsp-gcr-public/python:3.9"
   }
 
   output {
