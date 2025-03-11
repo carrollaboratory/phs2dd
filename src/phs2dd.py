@@ -14,14 +14,18 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-def get_lastest_version(study_url):
+def get_lastest_version(study_url, phs_id):
     try:
         response = requests.get(study_url)
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a')
-        versions = [link.get('href').strip('/') for link in links if link.get('href').startswith(phs)]
-        latest_version = max(versions, key=lambda x: int(x.split('.')[1][1:]))
+        versions = [link.get('href').strip('/') for link in links if link.get('href').startswith(phs_id)]
         
+        if not versions:
+            logging.error(f"No data dictionaries found for PHS ID: {phs_id} at {study_url}")
+            return None
+        
+        latest_version = max(versions, key=lambda x: int(x.split('.')[1][1:]))
         return latest_version
     
     except requests.exceptions.RequestException as e:
@@ -120,21 +124,27 @@ def convert_xml_urls_to_csv(xml_urls):
         logging.error(f"An error occurred: {e}")
         print(f"An error occurred: {e}")
 
-def main(phs_id):
-    study_url = f"https://ftp.ncbi.nlm.nih.gov/dbgap/studies/{phs_id}/"
-    pheno_var_sums_url = f"{study_url}{get_lastest_version(study_url)}/pheno_variable_summaries/"
-    data_dict_urls = []
-    for data_dict_url in get_data_dict_str(pheno_var_sums_url):
-        data_dict_urls.append(f"{pheno_var_sums_url}{data_dict_url}")
-    convert_xml_urls_to_csv(data_dict_urls)
-    logging.info(f"Processed PHS ID: {phs_id}, Data Dict URLs: {data_dict_urls}")
+def main(phs_ids):
+    for phs_id in phs_ids:
+        study_url = f"https://ftp.ncbi.nlm.nih.gov/dbgap/studies/{phs_id}/"
+        latest_version = get_lastest_version(study_url, phs_id)
         
+        if latest_version is None:
+            continue
+        
+        pheno_var_sums_url = f"{study_url}{latest_version}/pheno_variable_summaries/"
+        data_dict_urls = []
+        for data_dict_url in get_data_dict_str(pheno_var_sums_url):
+            data_dict_urls.append(f"{pheno_var_sums_url}{data_dict_url}")
+        convert_xml_urls_to_csv(data_dict_urls)
+        logging.info(f"Processed PHS ID: {phs_id}, Data Dict URLs: {data_dict_urls}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Make a GET request to a specified URL.")
-    parser.add_argument("-phs", "--phs_id", type=str, required=True, help="PHS id to scrape data dict from dbgap.")
+    parser.add_argument("-phs", "--phs_ids", type=str, nargs='+', required=True, help="PHS ids to scrape data dict from dbgap.")
     args = parser.parse_args()
-    phs = args.phs_id
-    main(phs)    
+    phs_ids = args.phs_ids
+    main(phs_ids)
     #todo: what to do if latest version data_dict is not available?
     #yes get the previous latest version.
     #create a log if it cant find the latest version and then get the previous version. timestamp log to the second. also how many vars found
