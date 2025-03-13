@@ -1,17 +1,4 @@
 
-Skip to main content
-Terra
-Terra Workflow Repository
-Workflows
-data-dictionary/phs2dd
-1
-Scheduled Maintenance - March 5, 2025 & March 7, 2025 (Terra platform)
-We will be performing maintenance on multiple Terra services between 8-9am ET on March 5 and March 7.
-dashboard
-wdl
-Version:
-12
-
 version 1.0
 
 task run_phs2dd_script {
