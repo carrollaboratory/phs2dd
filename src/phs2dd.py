@@ -72,13 +72,13 @@ def convert_xml_urls_to_csv(xml_urls):
                 writer = csv.writer(f)
                 # Write header row
                 writer.writerow([
-                    "name", 
+                    "variable_name", 
                     "description", 
                     "type", 
-                    "unit", 
-                    "logical_min", 
-                    "logical_max", 
-                    "coded_values", 
+                    "min", 
+                    "max", 
+                    "units", 
+                    "enumerations", 
                     "comment",
                     "dbgap_id"
                 ])
@@ -109,10 +109,10 @@ def convert_xml_urls_to_csv(xml_urls):
                         name, 
                         description, 
                         var_type, 
-                        unit, 
                         logical_min, 
                         logical_max, 
-                        coded_values, 
+                        unit, 
+                        coded_values,
                         comment,
                         var_id 
                     ])
