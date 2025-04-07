@@ -130,7 +130,7 @@ def main(phs_ids):
         latest_version = get_lastest_version(study_url, phs_id)
         
         if latest_version is None:
-            continue
+            raise ValueError(f"No latest version found for PHS ID: {phs_id}")            
         
         pheno_var_sums_url = f"{study_url}{latest_version}/pheno_variable_summaries/"
         data_dict_urls = []
