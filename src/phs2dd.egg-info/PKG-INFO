@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: phs2dd
+Version: 0.0.0
+Summary: A script to scrape data dictionaries from dbGaP.
+Author-email: Morgan Higby-Flowers <morgan.e.higby-flowers@vumc.org>
+Keywords: dbGaP,data dictionary,scraping
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.25.1
+Requires-Dist: beautifulsoup4>=4.9.3
+Requires-Dist: lxml>=4.6.2
+
+# phs2dd
+     todo: what to do if latest version data_dict is not available?
+     maybe get the previous latest version?
+
+  
+      get_data_dict_data(data_dict_url)
+
+      To run this script, you would use the command line and provide the PHS id as an argument.
+      For example, if the PHS id is "phs000001", you would run:
+      python phs2dd.py -phs phs000001
+     pip install lxml
+     pip install BeautifulSoup4
+     pip install requests
+     pip install argparse
+     pip install csv

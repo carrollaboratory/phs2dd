@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/phs2dd/__init__.py
+src/phs2dd/core.py
+src/phs2dd.egg-info/PKG-INFO
+src/phs2dd.egg-info/SOURCES.txt
+src/phs2dd.egg-info/dependency_links.txt
+src/phs2dd.egg-info/entry_points.txt
+src/phs2dd.egg-info/requires.txt
+src/phs2dd.egg-info/top_level.txt
