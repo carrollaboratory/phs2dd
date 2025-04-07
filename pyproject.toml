@@ -20,10 +20,15 @@ dependencies = [
     "lxml>=4.6.2"
 ]
 
-dynamic = ["version"]
+version = "0.1.0"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
+
 [project.scripts]
 phs2dd = "phs2dd:main"
+
+[tool.setuptools]
+packages = ["phs2dd"]
+package-dir = {"" = "src"}
