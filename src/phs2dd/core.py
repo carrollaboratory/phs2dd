@@ -68,7 +68,7 @@ def convert_xml_urls_to_csv(xml_urls):
             variables = root.findall(".//variable")
 
 
-            with open(csv_name, mode="w", newline="", encoding="utf-8") as f:
+            with open(f"dbgap/{csv_name}", mode="w", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 # Write header row
                 writer.writerow([
