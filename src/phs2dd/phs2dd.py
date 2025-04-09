@@ -56,6 +56,13 @@ def convert_xml_urls_to_csv(xml_urls):
         For each URL in xml_urls (dbGaP 'data_dict.xml' files), downloads the file,
         parses it to extract <variable> data, and writes a CSV to disk.
         """
+        # Define the folder name
+        output_folder = "dbgap_csvs"
+        
+        # Create the folder if it doesn't exist
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
         for url in xml_urls:
             response = requests.get(url)
             response.raise_for_status() 
@@ -63,12 +70,11 @@ def convert_xml_urls_to_csv(xml_urls):
             root = etree.fromstring(response.content)
 
             base_name = os.path.basename(url)
-            csv_name = base_name.replace(".xml", ".csv")
+            csv_name = os.path.join(output_folder, base_name.replace(".xml", ".csv"))
 
             variables = root.findall(".//variable")
 
-
-            with open(f"dbgap/{csv_name}", mode="w", newline="", encoding="utf-8") as f:
+            with open(csv_name, mode="w", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 # Write header row
                 writer.writerow([
@@ -119,6 +125,19 @@ def convert_xml_urls_to_csv(xml_urls):
 
             print(f"Saved CSV: {csv_name}")
             logging.info(f"Saved CSV: {csv_name}")
+            
+        csv_names = [os.path.basename(url).replace('.xml', '.csv') for url in xml_urls]
+        if csv_names:
+            # Extract the part before '.data_dict' from the first filename
+            prefix = csv_names[0].split('.data_dict')[0] if '.data_dict' in csv_names[0] else ''
+            if prefix:
+                # Create new folder name
+                new_folder = prefix
+                # Rename the folder
+                if os.path.exists(output_folder):
+                    os.rename(output_folder, new_folder)
+                    output_folder = new_folder
+                    logging.info(f"Renamed output folder to: {new_folder}")
     
     except requests.exceptions.RequestException as e:
         logging.error(f"An error occurred: {e}")
